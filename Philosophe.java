@@ -14,27 +14,30 @@ public class Philosophe implements Runnable {
         this.fourchette2 = fourchette2;
     }
 
-    private void manger() {
+    private synchronized void manger() {
         try {
-            synchronized (fourchette1) {
-                synchronized (fourchette2) {
-                    if (plat > 0) {
-                        System.out.println(nom + " commence à manger. Plats restants: " + plat);
-                        plat--;
-                        Thread.sleep(EATING_TIME);
-                        System.out.println(nom + " a fini de manger. Plats restants: " + plat);
-                    }
-                }
+            if(fourchette1.isAvailable() && fourchette2.isAvailable()) {
+                fourchette1.setAvailable(false);
+                fourchette2.setAvailable(false);
+                
+                System.out.println(nom + " commence a manger son plat qui reste " + plat);
+                plat--;
+                Thread.sleep(EATING_TIME);
+                System.out.println(nom + " a fini de manger son plat qui reste " + plat);
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+        } finally {
+            fourchette1.setAvailable(true);
+            fourchette2.setAvailable(true);
         }
     }
 
-    private void penser() {
+    private synchronized void penser() {
         try {
             System.out.println(nom + " pense");
             Thread.sleep(THINKING_TIME);
+            System.out.println(nom + " a fini de penser");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
