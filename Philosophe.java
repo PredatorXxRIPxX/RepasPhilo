@@ -22,8 +22,12 @@ public class Philosophe implements Runnable {
                 
                 System.out.println(nom + " commence a manger son plat qui reste " + plat);
                 plat--;
-                Thread.sleep(EATING_TIME);
                 System.out.println(nom + " a fini de manger son plat qui reste " + plat);
+                fourchette1.setAvailable(true);
+                fourchette2.setAvailable(true);
+                Thread.sleep(EATING_TIME);
+                notify();
+
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
