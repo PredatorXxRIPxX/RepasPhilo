@@ -23,6 +23,8 @@ public class Philosophe implements Runnable {
                         plat--;
                         Thread.sleep(EATING_TIME);
                         System.out.println(nom + " a fini de manger. Plats restants: " + plat);
+                    } else {
+                        this.stop();
                     }
                 }
             }
